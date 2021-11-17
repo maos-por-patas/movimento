@@ -13,10 +13,6 @@ from PIL import Image
 #import plotly.express as px
 import streamlit.components.v1 as components
 import requests
-import pyautogui
-#import time
-import pyperclip
-import tkinter
 import base64
 
 from pathlib import Path
