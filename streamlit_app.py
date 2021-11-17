@@ -10,10 +10,19 @@ import numpy as np
 from folium.plugins import MiniMap
 from folium.plugins import MeasureControl
 from PIL import Image
-import plotly.express as px
+#import plotly.express as px
 import streamlit.components.v1 as components
 import requests
+import pyautogui
+#import time
+import pyperclip
+import tkinter
+import base64
 
+from pathlib import Path
+import sqlite3
+from sqlite3 import Connection
+URI_SQLITE_DB = "test.db"
 
 def load_lottieurl(url: str):
     r = requests.get(url)
@@ -21,6 +30,16 @@ def load_lottieurl(url: str):
         return None
     return r.json()
 
+def st_display_pdf(file):
+    # Opening file from file path
+    with open(file, "rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+
+    # Embedding PDF in HTML
+    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="550" type="application/pdf"></iframe>'
+
+    # Displaying File
+    st.markdown(pdf_display, unsafe_allow_html=True)
 
 icon = Image.open("static/icone.jpg")
 
@@ -41,8 +60,8 @@ st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 st.sidebar.subheader('Menu')
 
-study = st.sidebar.radio("ir para", ('Quem Somos', 'Informações de Animais',
-                         'Informações de Casas de Ração'))
+study = st.sidebar.radio("ir para", ('Quem Somos', 'Projeto de Lei', 'Informações de Animais',
+                         'Informações de Casas de Ração', 'Cadastro de Doadores'))
 
 st.sidebar.write("---")
 
@@ -123,6 +142,29 @@ if study == 'Quem Somos':
         
         Esse site foi desenvolvido como parte de Projeto Integrador da Universidade Virtual do Estado de São Paulo (UNIVESP), Polo de Itapecerica da Serra, com os integrantes Adriano, Cláudio, Jéssica, João, Kelvin e Nivaldo.""")
 
+elif study == 'Projeto de Lei':
+    t1, mid, t2 = st.columns([20, 1, 10])
+    with t1:
+        st.markdown('# Movimento Mãos por Patas')
+
+    with t2:
+        # use_column_width=True)
+        st.image(Image.open("static/logo.jpeg"), width=200)
+
+    st.write(
+        """
+
+        """)
+
+    st.markdown('### Projeto de Lei para Itapecerica da Serra')
+    
+    st.write(
+        """
+
+        """)
+
+    st_display_pdf("lei.pdf")
+
 elif study == 'Informações de Animais':
     # functions end here, title, sidebar setting and descriptions start here
     t1, mid, t2 = st.columns([20, 1, 10])
@@ -190,8 +232,7 @@ elif study == 'Informações de Casas de Ração':
     with st.spinner('Aguarde o processamento sobre os dados...'):
         fig1 = Figure(height=350, width=750)
 
-        m = folium.Map(tiles="Stamen Terrain",
-                       location=[-23.70984667472482, -46.85242934867622],
+        m = folium.Map(location=[-23.70984667472482, -46.85242934867622],
                        zoom_start=13)
         fig1.add_child(m)
 
@@ -220,3 +261,16 @@ elif study == 'Informações de Casas de Ração':
         ).add_to(m)
 
         folium_static(m)
+
+elif study == 'Cadastro de Doadores':
+    t1, mid, t2 = st.columns([20, 1, 10])
+    with t1:
+        st.markdown('# Movimento Mãos por Patas')
+
+    with t2:
+        # use_column_width=True)
+        st.image(Image.open("static/logo.jpeg"), width=200)
+
+    st.write("""Olá, estamos feliz em ter mais um doador para ajudar o movimento, sem sua ajuda não seriamos capazes de nada!""")
+
+
