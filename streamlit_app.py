@@ -20,11 +20,13 @@ import sqlite3
 from sqlite3 import Connection
 URI_SQLITE_DB = "test.db"
 
+
 def load_lottieurl(url: str):
     r = requests.get(url)
     if r.status_code != 200:
         return None
     return r.json()
+
 
 def st_display_pdf(file):
     # Opening file from file path
@@ -36,6 +38,7 @@ def st_display_pdf(file):
 
     # Displaying File
     st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 icon = Image.open("static/icone.jpg")
 
@@ -76,7 +79,7 @@ if study == 'Quem Somos':
         """)
 
     st.markdown('### Animais de Rua de Itapecerica da Serra')
-    
+
     st.write(
         """
 
@@ -99,11 +102,11 @@ if study == 'Quem Somos':
 
         """)
 
-    #https://www.facebook.com/777922895900095/videos/431890404709544
+    # https://www.facebook.com/777922895900095/videos/431890404709544
 
     mid_video1, t1_video, mid_video = st.columns([5, 10, 5])
     with t1_video:
-        video1 = open("static/video.mp4", "rb") 
+        video1 = open("static/video.mp4", "rb")
         st.video(video1)
 
         st.write("""
@@ -153,7 +156,7 @@ elif study == 'Projeto de Lei':
         """)
 
     st.markdown('### Projeto de Lei para Itapecerica da Serra')
-    
+
     st.write(
         """
 
@@ -182,7 +185,7 @@ elif study == 'Informações de Animais':
 
     with t2_B:
         st.image(Image.open("static/foto2.jpeg"))
-    
+
     with t3_C:
         st.image(Image.open("static/foto3.jpeg"))
 
@@ -192,7 +195,7 @@ elif study == 'Informações de Animais':
 
     with t5_B:
         st.image(Image.open("static/foto6.jpeg"))
-    
+
     with t6_C:
         st.image(Image.open("static/foto9.jpeg"))
 
@@ -202,7 +205,7 @@ elif study == 'Informações de Animais':
 
     with t8_B:
         st.image(Image.open("static/foto11.jpeg"))
-    
+
     with t9_C:
         st.image(Image.open("static/foto12.jpeg"))
 
@@ -229,7 +232,7 @@ elif study == 'Informações de Casas de Ração':
         fig1 = Figure(height=350, width=750)
 
         m = folium.Map(location=[-23.70984667472482, -46.85242934867622],
-                       zoom_start=13)
+                       zoom_start=14)
         fig1.add_child(m)
 
         f3 = folium.FeatureGroup("Casas De Ração")
@@ -237,6 +240,36 @@ elif study == 'Informações de Casas de Ração':
         folium.Marker(
             location=[-23.71102102311727, -46.8557157004849],
             tooltip="Dino Rações",
+        ).add_to(f3)
+
+        folium.Marker(
+            location=[-23.709959184624715, -46.85791897552979],
+            tooltip="Bo-Bi Rações",
+        ).add_to(f3)
+
+        folium.Marker(
+            location=[-23.708271355714096, -46.84995118903379],
+            tooltip="Casa de Ração Pet Cleim",
+        ).add_to(f3)
+
+        folium.Marker(
+            location=[-23.71271585160187, -46.85344217509003],
+            tooltip="Casa de Ração Dog e Cia",
+        ).add_to(f3)
+
+        folium.Marker(
+            location=[-23.721408673643868, -46.86099729322438],
+            tooltip="Casa de Ração Don Divas",
+        ).add_to(f3)
+
+        folium.Marker(
+            location=[-23.714798811402463, -46.87789919104499],
+            tooltip="Casa de Ração Dantas",
+        ).add_to(f3)
+
+        folium.Marker(
+            location=[-23.71981546525325, -46.85564731353991],
+            tooltip="Ita Rações",
         ).add_to(f3)
 
         f3.add_to(m)
@@ -251,8 +284,8 @@ elif study == 'Informações de Casas de Ração':
 
         plugins.Fullscreen(
             position="topright",
-            title="Expand me",
-            title_cancel="Exit me",
+            title="Aumentar em tela inteira",
+            title_cancel="Sair de tela inteira",
             force_separate_button=True,
         ).add_to(m)
 
@@ -269,4 +302,52 @@ elif study == 'Cadastro de Doadores':
 
     st.write("""Olá, estamos feliz em ter mais um doador para ajudar o movimento, sem sua ajuda não seriamos capazes de nada!""")
 
+    st.write("""
+             
+             """)
 
+    st.markdown('## Gostaria de nos ajudar?')
+
+    categoria = st.radio("Por favor selecione a categoria",
+                         ('Pessoa Física', 'Pessoa Jurídica'))
+    if categoria == 'Pessoa Física':
+        st.write('Pessoa Física.')
+
+        with st.form('form-pf'):
+            st.selectbox('Qual tipo de doação?', [
+                         'Ração', 'Medicamentos', 'Material'], key=1)
+            name = st.text_input(label='Nome')
+            cpf = st.text_input(label='CPF')
+            endereco = st.text_input(label='Endereço')
+            cidade = st.text_input(label='Cidade')
+            cep = st.text_input(label='CEP')
+            telefone = st.text_input(label='Telefone')
+            email = st.text_input(label='E-mail')
+            idade = st.text_input(label='Idade')
+            submitted1 = st.form_submit_button('Enviar')
+
+        st.write('Por favor confira as informações antes de submeter o formulário. Ao clicar em Enviar concordo com a Lei Geral de Proteção de Dados Pessoais (LGPD).')
+
+        if submitted1:
+            st.write(f'Obrigado pela ajuda {name}!')
+
+    else:
+        st.write("Pessoa Jurídica.")
+
+        with st.form('form-pj'):
+            st.selectbox('Qual tipo de doação?', [
+                         'Ração', 'Medicamentos', 'Material'], key=1)
+            name = st.text_input(label='Razão Social')
+            cnpj = st.text_input(label='CNPJ')
+            endereco = st.text_input(label='Endereço')
+            cidade = st.text_input(label='Cidade')
+            cep = st.text_input(label='CEP')
+            telefone = st.text_input(label='Telefone')
+            email = st.text_input(label='E-mail')
+            #idade = st.text_input(label='Idade')
+            submitted1 = st.form_submit_button('Enviar')
+
+        st.write('Por favor confira as informações antes de submeter o formulário. Ao clicar em Enviar concordo com a Lei Geral de Proteção de Dados Pessoais (LGPD).')
+
+        if submitted1:
+            st.write(f'Obrigado pela ajuda {name}!')
